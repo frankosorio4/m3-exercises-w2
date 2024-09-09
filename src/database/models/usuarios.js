@@ -25,6 +25,10 @@ const Usuario = database.define('usuarios', {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      permissao: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
