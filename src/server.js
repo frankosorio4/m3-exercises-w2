@@ -2,13 +2,12 @@ require('dotenv').config()
 
 const database = require('./database/config')
 const express = require('express')
-
+const APP_PORT = process.env.APP_PORT
 
 const usuarioRouter = require('./dominios/usuarios')
 const questionariosRouter = require('./dominios/questionarios')
 const sessionsRouter = require('./dominios/sessions')
 const respostasRouter = require('./dominios/respostas')
-
 
 const app = express()
 /** Config */
@@ -25,9 +24,9 @@ async function iniciarServidor() {
     await database.authenticate()
     console.log("Banco de dados foi incializado com sucesso!")
 
-    app.listen(3333, () => {
+    app.listen(APP_PORT, () => {
 
-        console.log("Servidor rodando na porta 3333")
+        console.log(`Servidor está rodando na porta ${APP_PORT}: http://localhost:${APP_PORT}`)
     })
 }
 

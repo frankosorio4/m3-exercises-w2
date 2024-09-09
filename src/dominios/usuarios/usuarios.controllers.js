@@ -10,7 +10,7 @@ class UsuariosControllers {
      * @returns 
      */
     async index(request, response) {
-        const listaUsuarios = await usuarioService.list()
+        const listaUsuarios = await usuarioService.list(response)
         
         return response.json(listaUsuarios)
     }
@@ -25,9 +25,15 @@ class UsuariosControllers {
 
         const usuario = await usuarioService.createUser(body)
 
-        if(!usuario) return response.status(400).json({ message: "Usuário já possui cadastro"}) 
+        if(!usuario) return response.status(400).json({ message: "Usuário já possui cadastro"})
 
-        return response.status(201).json(usuario)
+        return response.status(201).json({
+            id: usuario.id,
+            nome: usuario.nome,
+            sobrenome: usuario.sobrenome,
+            email: usuario.email,
+            createdAt: usuario.createdAt
+        })
     }
     /**
          * 

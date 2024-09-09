@@ -7,7 +7,7 @@ module.exports = {
     database:  process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
-    dialect: "postgres",
+    dialect: process.env.DATABASE_DIALECT,
     logging: true,
     migrationStorageTableName: "migrations"
   },
@@ -17,7 +17,7 @@ module.exports = {
     database:  process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
-    dialect: "postgres",
+    dialect: process.env.DATABASE_DIALECT,
     migrationStorageTableName: "migrations"
   },
   production: {
@@ -26,7 +26,7 @@ module.exports = {
     database:  process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
-    dialect: "postgres",
+    dialect: process.env.DATABASE_DIALECT,
     migrationStorageTableName: "migrations"
   }
 }
