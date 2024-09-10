@@ -40,7 +40,11 @@ function garantirAutenticacaoRBAC(permissaoParametro) {
     return (request, response, next) => {
         const { authorization } = request.headers
     
-        if(!authorization) throw new Error('JWT token não encontrado')
+        if(!authorization){
+            return response
+            .status(400)
+            .json({ mensagem: 'Token não anexado' })
+}
         
         // Bearer [token...]
         const [, token] = authorization.split(' ')
@@ -50,7 +54,10 @@ function garantirAutenticacaoRBAC(permissaoParametro) {
     
             const { sub, permissao } = decoded;
             
-            if(permissao !== permissaoParametro) throw new Error("usuario não possui permissão para essa operação")
+            if(permissao !== permissaoParametro) {
+                return response
+                .status(400)
+                .json({ mensagem: 'Voce não tem permissao para accesar nesta rota.' })}
     
             request.usuario = {
                 id: sub,
@@ -58,7 +65,7 @@ function garantirAutenticacaoRBAC(permissaoParametro) {
             }
             next()
         } catch (error) {
-            throw new Error('JWT token não encontrado')
+            response.status(500).json({ mensagem: 'A requisição falhou' })
         }
     }
 }
