@@ -11,9 +11,9 @@ class QuestionariosControllers {
      */
     async index(request, response) {
         const { carregarPerguntas } = request.query
-        const listaQuestionarioss = await questionariosService.list(carregarPerguntas)
+        const listaQuestionarios = await questionariosService.list(carregarPerguntas,response)
         
-        return response.json(listaQuestionarioss)
+        return response.json(listaQuestionarios)
     }
     /**
          * 
@@ -24,7 +24,7 @@ class QuestionariosControllers {
     async create(request, response) {
         const { body } = request
 
-        const Questionarios = await questionariosService.create(body)
+        const Questionarios = await questionariosService.create(body,response)
 
         return response.status(201).json(Questionarios)
     }

@@ -3,6 +3,7 @@ const yup = require('yup')
 
 const UsuariosControllers = require('./usuarios.controllers')
 const { validarSchema } = require('../../middlewares/validacaoRotas')
+const {garantirAutenticacao} =require('../../middlewares/garantirAutenticacao')
 const usuarioRouter = Router()
 const usuariosControllers = new UsuariosControllers()
 
