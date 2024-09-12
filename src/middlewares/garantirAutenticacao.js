@@ -9,8 +9,12 @@ const jwtSecret = "e1ba46759dc1501e9b4cf684df08fa17eabc955d"
 function garantirAutenticacao(request, response, next) {
     const { authorization } = request.headers
 
-    if(!authorization) throw new Error('JWT token não encontrado')
-    
+    if (!authorization) {
+        return response
+            .status(400)
+            .json({ mensagem: 'Token não anexado' })
+    }
+
     // Bearer [token...]
     const [, token] = authorization.split(' ')
 
@@ -18,16 +22,15 @@ function garantirAutenticacao(request, response, next) {
         const decoded = verify(token, jwtSecret)
 
         const { sub, permissao } = decoded;
-        
-        console.log({ sub, permissao })
 
         request.usuario = {
             id: sub,
             permissao
         }
+
         next()
     } catch (error) {
-        throw new Error('JWT token não encontrado')
+        response.status(500).json({ mensagem: 'A requisição falhou.' })
     }
 }
 
@@ -39,33 +42,34 @@ function garantirAutenticacao(request, response, next) {
 function garantirAutenticacaoRBAC(permissaoParametro) {
     return (request, response, next) => {
         const { authorization } = request.headers
-    
-        if(!authorization){
+
+        if (!authorization) {
             return response
-            .status(400)
-            .json({ mensagem: 'Token não anexado' })
-}
-        
+                .status(400)
+                .json({ mensagem: 'Token não anexado' })
+        }
+
         // Bearer [token...]
         const [, token] = authorization.split(' ')
-    
+
         try {
             const decoded = verify(token, jwtSecret)
-    
+
             const { sub, permissao } = decoded;
-            
-            if(permissao !== permissaoParametro) {
+
+            if (permissao !== permissaoParametro) {
                 return response
-                .status(400)
-                .json({ mensagem: 'Voce não tem permissao para accesar nesta rota.' })}
-    
+                    .status(400)
+                    .json({ mensagem: 'Você não tem permissão para acessar nesta rota.' })
+            }
+
             request.usuario = {
                 id: sub,
                 permissao
             }
             next()
         } catch (error) {
-            response.status(500).json({ mensagem: 'A requisição falhou' })
+            response.status(500).json({ mensagem: 'A requisição falhou.' })
         }
     }
 }

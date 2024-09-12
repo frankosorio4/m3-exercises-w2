@@ -5,28 +5,31 @@ const { sign } = require('jsonwebtoken')
 const jwtSecret = "e1ba46759dc1501e9b4cf684df08fa17eabc955d"
 
 class SessionServices {
-    async create({ email, senha }, response) {
+    async login({ email, senha }, response) {
         try {
+            //verifying the email
             const usuario = await usuarioModel.findOne({
                 where: {
                     email,
                 }
             })
-            
-            if(!usuario) {
-                //throw new Error("Erro no servidor")
+
+            if (!usuario) {
                 return null
             }
-    
+
             const senhaCriptografada = await compare(senha, usuario.senha)
-    
-            if(!senhaCriptografada) return null 
-            
-            const token = sign({ permissao: 'criador' }, jwtSecret, {
-                subject: usuario.id,
-                expiresIn: '1d'
+
+            if (!senhaCriptografada) return null
+
+            const token = sign(
+                { permissao: usuario.permissao },
+                jwtSecret, 
+                {
+                    subject: usuario.id,
+                    expiresIn: '1d'
             })
-    
+
             return {
                 id: usuario.id,
                 nome: usuario.nome,
@@ -34,7 +37,7 @@ class SessionServices {
             }
         } catch (error) {
             console.log(error)
-            return response.status(500).json({mensagem: 'Erro fazer o login.'}) 
+            return response.status(500).json({ mensagem: 'Erro fazer o login.' })
         }
     }
 }
