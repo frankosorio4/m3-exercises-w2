@@ -19,11 +19,22 @@ class RespostaControllers {
             ...body,
             perguntaId,
             usuarioId: id
-        })
+        },response)
 
         return response.status(201).json(Questionarios)
     }
-    
+
+    async apagar(request, response) {
+        const { perguntaId } = request.params
+        console.log(perguntaId)
+        const apagou = await respostasService.apagar(perguntaId,response)
+        
+        if(!apagou) {
+            return response.status(400).json({ message: "Não foi possivel apagar"})
+        }
+
+        return response.status(204).end()
+    }
 }
 
 module.exports = RespostaControllers

@@ -12,7 +12,7 @@ class SessionsControllers {
     async create(request, response) {
         const { body } = request
 
-        const session = await sessionsService.create( body, response)
+        const session = await sessionsService.login( body, response)
 
         if(!session) return response.status(400).json({ message: "Email/Senha inválida"}) 
 
