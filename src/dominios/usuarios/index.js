@@ -18,7 +18,47 @@ const schemaPostUsuario = yup.object({
 })
 
 usuarioRouter.get('/', usuariosControllers.index)
-usuarioRouter.post('/', validarSchema(schemaPostUsuario), usuariosControllers.create)
+usuarioRouter.post('/', validarSchema(schemaPostUsuario), usuariosControllers.create
+    /*
+    #swagger.tags = ['usuarios']
+    #swagger.summary = 'Cria uma nova conta de usuário'
+    #swagger.description = 'Endpoint para criação de uma nova conta de usuário'
+    #swagger.parameters['dados'] = {
+        in: 'body',
+        description: 'Você pode criar um novo usuário com os seguintes dados ou modificalos.',
+        required: true,
+        schema: {
+                nome: 'Usuario 3',
+                sobrenome: 'usuario',
+                email: 'usuario1@email.com',
+                senha: '123456',
+                permissao: 'criador'
+        }
+    }
+    #swagger.responses[201] = {
+        description: 'Conta criada com sucesso',
+        schema: {
+                nome: 'Usuario 3',
+                sobrenome: 'usuario',
+                email: 'usuario3@email.com',
+                permissao: 'criador',
+                createdAt:  '2024-06-27T00:00:00.000Z'
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Dados inválidos',
+        schema: { mensagem: 'Um o mais dados faltantes. O nome, sexo, cpf, endereço, email, senha, e data de nascimento são obrigatórios.'}
+    }
+    #swagger.responses[409] = {
+        description: 'Conflito de dados',
+        schema: { mensagem: 'Cpf ja cadastrado.' || 'Email ja cadastrado.'}
+    }
+    #swagger.responses[500] = {
+        description: 'Erro no servidor',
+        schema: {mensagem: 'Não foi possível criar a conta.'}
+    }
+   */
+)
 usuarioRouter.delete('/:id', usuariosControllers.delete)
 
 module.exports = usuarioRouter

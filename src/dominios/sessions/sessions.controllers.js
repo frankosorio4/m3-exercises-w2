@@ -12,11 +12,18 @@ class SessionsControllers {
     async create(request, response) {
         const { body } = request
 
-        const session = await sessionsService.login( body, response)
+        try {
 
-        if(!session) return response.status(400).json({ message: "Email/Senha inválida"}) 
-
-        return response.json(session)
+            const session = await sessionsService.login( body)
+    
+            if(!session) return response.status(400).json({ message: "Email/Senha inválida"}) 
+    
+            return response.status(204).json(session)
+            
+        } catch (error) {
+            console.log(error)
+            return response.status(500).json({ mensagem: 'Erro fazer o login.' })
+        }
     }
 }
 

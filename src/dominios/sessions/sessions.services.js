@@ -5,40 +5,37 @@ const { sign } = require('jsonwebtoken')
 const jwtSecret = "e1ba46759dc1501e9b4cf684df08fa17eabc955d"
 
 class SessionServices {
-    async login({ email, senha }, response) {
-        try {
-            //verifying the email
-            const usuario = await usuarioModel.findOne({
-                where: {
-                    email,
-                }
-            })
+    async login({ email, senha }) {
 
-            if (!usuario) {
-                return null
+        //verifying the email
+        const usuario = await usuarioModel.findOne({
+            where: {
+                email,
             }
+        })
 
-            const senhaCriptografada = await compare(senha, usuario.senha)
-
-            if (!senhaCriptografada) return null
-
-            const token = sign(
-                { permissao: usuario.permissao },
-                jwtSecret, 
-                {
-                    subject: usuario.id,
-                    expiresIn: '1d'
-            })
-
-            return {
-                id: usuario.id,
-                nome: usuario.nome,
-                token
-            }
-        } catch (error) {
-            console.log(error)
-            return response.status(500).json({ mensagem: 'Erro fazer o login.' })
+        if (!usuario) {
+            return null
         }
+
+        const senhaCriptografada = await compare(senha, usuario.senha)
+
+        if (!senhaCriptografada) return null
+
+        const token = sign(
+            { permissao: usuario.permissao },
+            jwtSecret,
+            {
+                subject: usuario.id,
+                expiresIn: '1d'
+            })
+
+        return {
+            id: usuario.id,
+            nome: usuario.nome,
+            token
+        }
+
     }
 }
 
